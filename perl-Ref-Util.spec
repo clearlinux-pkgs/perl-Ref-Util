@@ -4,22 +4,30 @@
 #
 Name     : perl-Ref-Util
 Version  : 0.204
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/A/AR/ARC/Ref-Util-0.204.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AR/ARC/Ref-Util-0.204.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libr/libref-util-perl/libref-util-perl_0.204-1.debian.tar.xz
 Summary  : 'Utility functions for checking references'
 Group    : Development/Tools
 License  : MIT
-Requires: perl-Ref-Util-license
-Requires: perl-Ref-Util-man
-Requires: perl(Ref::Util::XS)
+Requires: perl-Ref-Util-license = %{version}-%{release}
+BuildRequires : buildreq-cpan
 BuildRequires : perl(Ref::Util::XS)
 
 %description
 This archive contains the distribution Ref-Util,
 version 0.204:
 Utility functions for checking references
+
+%package dev
+Summary: dev components for the perl-Ref-Util package.
+Group: Development
+Provides: perl-Ref-Util-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-Ref-Util package.
+
 
 %package license
 Summary: license components for the perl-Ref-Util package.
@@ -29,19 +37,11 @@ Group: Default
 license components for the perl-Ref-Util package.
 
 
-%package man
-Summary: man components for the perl-Ref-Util package.
-Group: Default
-
-%description man
-man components for the perl-Ref-Util package.
-
-
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n Ref-Util-0.204
-mkdir -p %{_topdir}/BUILD/Ref-Util-0.204/deblicense/
+cd ..
+%setup -q -T -D -n Ref-Util-0.204 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/Ref-Util-0.204/deblicense/
 
 %build
@@ -66,12 +66,12 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/perl-Ref-Util
-cp LICENSE %{buildroot}/usr/share/doc/perl-Ref-Util/LICENSE
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-Ref-Util
+cp LICENSE %{buildroot}/usr/share/package-licenses/perl-Ref-Util/LICENSE
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -80,14 +80,14 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/Ref/Util.pm
-/usr/lib/perl5/site_perl/5.26.1/Ref/Util/PP.pm
+/usr/lib/perl5/vendor_perl/5.26.1/Ref/Util.pm
+/usr/lib/perl5/vendor_perl/5.26.1/Ref/Util/PP.pm
 
-%files license
-%defattr(-,root,root,-)
-/usr/share/doc/perl-Ref-Util/LICENSE
-
-%files man
+%files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/Ref::Util.3
 /usr/share/man/man3/Ref::Util::PP.3
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-Ref-Util/LICENSE
