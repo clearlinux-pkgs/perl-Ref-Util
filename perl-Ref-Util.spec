@@ -4,7 +4,7 @@
 #
 Name     : perl-Ref-Util
 Version  : 0.204
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/A/AR/ARC/Ref-Util-0.204.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AR/ARC/Ref-Util-0.204.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libr/libref-util-perl/libref-util-perl_0.204-1.debian.tar.xz
@@ -80,6 +80,7 @@ make TEST_VERBOSE=1 test
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/perl-Ref-Util
 cp %{_builddir}/Ref-Util-0.204/LICENSE %{buildroot}/usr/share/package-licenses/perl-Ref-Util/7546885f6438a43ac916b550dd5c623d667a7fc4
+cp %{_builddir}/debian/copyright %{buildroot}/usr/share/package-licenses/perl-Ref-Util/138c662d9dd39191eb94bee4188ec2d3ded00d07
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -100,9 +101,10 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-Ref-Util/138c662d9dd39191eb94bee4188ec2d3ded00d07
 /usr/share/package-licenses/perl-Ref-Util/7546885f6438a43ac916b550dd5c623d667a7fc4
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.30.1/Ref/Util.pm
-/usr/lib/perl5/vendor_perl/5.30.1/Ref/Util/PP.pm
+/usr/lib/perl5/vendor_perl/5.30.2/Ref/Util.pm
+/usr/lib/perl5/vendor_perl/5.30.2/Ref/Util/PP.pm
